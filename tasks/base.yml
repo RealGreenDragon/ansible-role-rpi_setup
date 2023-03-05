@@ -6,11 +6,15 @@
     shell: /bin/bash
   become: true
 
+- name: Update packages cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+
 - name: Manage base packages
   ansible.builtin.apt:
     name: "{{ rpi_setup_base_packages }}"
     state: present
-    update_cache: true
   become: true
 
 - name: Update all packages

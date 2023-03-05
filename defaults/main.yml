@@ -1,11 +1,11 @@
 ---
 #### General
 _rpi_setup_reboot_required: false
-rpi_setup_python_command: python3.9
 _rpi_setup_python_modules_default:
   - pip
   - wheel
   - setuptools
+rpi_setup_python_command: python3.9
 rpi_setup_configure_resources:
   - base
   - rpi
@@ -91,5 +91,4 @@ rpi_setup_docker_users:
   - "{{ rpi_setup_base_main_user_name }}"
 
 #### docker services
-_rpi_setup_docker_service: {}
 rpi_setup_docker_services: []
