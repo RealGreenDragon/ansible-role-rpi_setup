@@ -19,6 +19,7 @@
   ansible.builtin.command: /root/get-docker.sh
   environment:
     CHANNEL: stable
+  changed_when: _rpi_setup_docker_is_present.rc == 1
   become: true
   when: _rpi_setup_docker_is_present.rc == 1
 
@@ -40,4 +41,4 @@
   become: true
 
 - name: Reset connection
-  meta: reset_connection
+  ansible.builtin.meta: reset_connection

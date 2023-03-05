@@ -10,7 +10,7 @@
     dest: "{{ rpi_setup_vsftpd_service.project_path }}/docker-compose.yml"
     content: |
       ---
-      {{ rpi_setup_vsftpd_service.configuration | to_nice_yaml(indent=2) }}
+      {{ _rpi_setup_docker_service.configuration | to_nice_yaml(indent=2) }}
   become: true
 
 - name: Manage Docker Compose Service systemd unit
@@ -26,6 +26,6 @@
   ansible.builtin.systemd:
     name: "{{ _rpi_setup_docker_service.name }}"
     state: "{{ _rpi_setup_docker_service.state | d(omit) }}"
-    enabled: "{{ rpi_setup_vsftpd_service.enabled | bool }}"
+    enabled: "{{ _rpi_setup_docker_service.enabled | bool }}"
     daemon_reload: true
   become: true

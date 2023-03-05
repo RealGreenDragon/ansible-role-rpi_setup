@@ -3,12 +3,19 @@
   ansible.builtin.file:
     path: "{{ _rpi_setup_rpwcs_install_path }}"
     state: directory
+    owner: root
+    group: root
+    mode: 0644
   become: true
 
 - name: Install Raspberry Pi Web Control Server files
   ansible.builtin.copy:
     src: rpwcs
     dest: "{{ _rpi_setup_rpwcs_install_path }}"
+    owner: root
+    group: root
+    mode: 0644
+    directory_mode: 0754
   become: true
 
 - name: Manage Raspberry Pi Web Control Server python virtualenv

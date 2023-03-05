@@ -32,7 +32,7 @@
   when: ('docker' in rpi_setup_configure_resources)
 
 - name: Manage Raspberry Pi Docker Compose Services
-  ansible.builtin.include_tasks: docker_services.yml
+  ansible.builtin.include_tasks: docker_service.yml
   loop: "{{ rpi_setup_docker_services }}"
   loop_control:
     loop_var: _rpi_setup_docker_service

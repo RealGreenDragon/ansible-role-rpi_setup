@@ -41,7 +41,7 @@
   notify: rpi_setup_vsftpd_service_restart_handler
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Manage vsftpd service
   ansible.builtin.systemd:

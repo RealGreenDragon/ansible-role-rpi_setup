@@ -1,6 +1,7 @@
 ---
 - name: Reboot Rpi
   ansible.builtin.shell: "sleep 5 && reboot"
+  changed_when: false
   async: 1
   poll: 0
   become: true

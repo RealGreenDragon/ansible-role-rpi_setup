@@ -39,7 +39,7 @@
   notify: rpi_setup_dhcpcd_service_restart_handler
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Manage mounts
   ansible.builtin.ansible.posix.mount:
