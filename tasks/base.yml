@@ -69,7 +69,7 @@
     dest: ~/.bashrc
     line: "{{ base_bashrc }}"
     create: true
-    mode: 644
+    mode: 0644
   loop: "{{ rpi_setup_base_bashrc }}"
   loop_control:
     loop_var: base_bashrc

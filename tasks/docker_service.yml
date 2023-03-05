@@ -1,16 +1,22 @@
 ---
 - name: Manage Docker Compose Service project folder
   ansible.builtin.file:
-    path: "{{ rpi_setup_vsftpd_service.project_path }}"
+    path: "{{ _rpi_setup_docker_service.project_path }}"
     state: directory
+    owner: root
+    group: root
+    mode: 0754
   become: true
 
 - name: Manage Docker Compose Service project file
   ansible.builtin.copy:
-    dest: "{{ rpi_setup_vsftpd_service.project_path }}/docker-compose.yml"
+    dest: "{{ _rpi_setup_docker_service.project_path }}/docker-compose.yml"
     content: |
       ---
       {{ _rpi_setup_docker_service.configuration | to_nice_yaml(indent=2) }}
+    owner: root
+    group: root
+    mode: 0644
   become: true
 
 - name: Manage Docker Compose Service systemd unit
