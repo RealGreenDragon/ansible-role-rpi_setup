@@ -42,7 +42,7 @@
   ansible.builtin.meta: flush_handlers
 
 - name: Manage mounts
-  ansible.builtin.ansible.posix.mount:
+  ansible.posix.mount:
     fstype: "{{ rpi_mount.fstype | default(omit) }}"
     opts: "{{ rpi_mount.opts | default(omit) }}"
     path: "{{ rpi_mount.path }}"

@@ -15,7 +15,7 @@
 
 - name: Update all packages
   ansible.builtin.apt:
-    state: latest
+    state: latest # noqa package-latest
     upgrade: safe
     autoclean: true
     autoremove: true
@@ -24,7 +24,7 @@
 
 - name: Perform dist upgrade
   ansible.builtin.apt:
-    state: latest
+    state: latest # noqa package-latest
     upgrade: dist
     autoclean: true
     autoremove: true

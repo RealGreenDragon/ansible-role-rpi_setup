@@ -91,4 +91,5 @@ rpi_setup_docker_users:
   - "{{ rpi_setup_base_main_user_name }}"
 
 #### docker services
+_rpi_setup_docker_service: {}
 rpi_setup_docker_services: []
