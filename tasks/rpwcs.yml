@@ -1,0 +1,36 @@
+---
+- name: Create Raspberry Pi Web Control Server folder
+  file:
+    path: "{{ _rpi_setup_rpwcs_install_path }}"
+    state: directory
+  become: true
+
+- name: Install Raspberry Pi Web Control Server files
+  copy:
+    src: rpwcs
+    dest: "{{ _rpi_setup_rpwcs_install_path }}"
+  become: true
+
+- name: Manage Raspberry Pi Web Control Server python virtualenv
+  pip:
+    name: "{{ _rpi_setup_python_modules_default + _rpi_setup_rpwcs_python_modules }}"
+    virtualenv: "{{ _rpi_setup_rpwcs_venv_path }}"
+    virtualenv_python: "{{ rpi_setup_python_command }}"
+  become: true
+
+- name: Manage Raspberry Pi Web Control Server service file
+  template:
+    src: rpwcs.service.j2
+    dest: /etc/systemd/system/rpwcs.service
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Manage Raspberry Pi Web Control Server status
+  systemd:
+    name: rpwcs.service
+    state: "{{ rpi_setup_rpwcs_service_state }}"
+    enabled: "{{ rpi_setup_rpwcs_service_enabled | bool }}"
+    daemon_reload: true
+  become: true

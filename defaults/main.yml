@@ -1,0 +1,94 @@
+---
+#### General
+_rpi_setup_reboot_required: false
+rpi_setup_python_command: python3.9
+_rpi_setup_python_modules_default:
+  - pip
+  - wheel
+  - setuptools
+rpi_setup_configure_resources:
+  - base
+  - rpi
+  - rpwcs
+  - vsftpd
+  - docker
+  - docker_services
+
+#### Base
+rpi_setup_base_main_user_name: pi
+rpi_setup_base_upgrade: true
+rpi_setup_base_dist_upgrade: false
+rpi_setup_base_packages:
+  - apt-transport-https
+  - build-essential
+  - ca-certificates
+  - curl
+  - gawk
+  - git
+  - less
+  - lsb-release
+  - net-tools
+  - python3
+  - python3-pip
+  - python3-venv
+  - p7zip-full
+  - sed
+  - unzip
+  - vim
+  - wget
+  - zip
+rpi_setup_base_python_modules: []
+rpi_setup_base_bashrc:
+  - "alias ll='ls -l'"
+  - "source /home/pi/pyenv/bin/activate"
+
+#### rpi
+rpi_setup_config_boot_options: []
+rpi_setup_config_rc_local: []
+rpi_setup_config_resolv_nameservers: []
+rpi_setup_config_dhcpcd_interface: eth0
+rpi_setup_config_dhcpcd_ip: []
+rpi_setup_config_dhcpcd_gateway: []
+rpi_setup_config_dhcpcd_dns_servers: []
+rpi_setup_config_mounts: []
+
+#### rpwcs
+_rpi_setup_rpwcs_python_modules:
+  - flask
+  - requests
+_rpi_setup_rpwcs_install_path: /var/www/rpwcs
+_rpi_setup_rpwcs_venv_path: "{{ _rpi_setup_rpwcs_install_path }}/venv"
+rpi_setup_rpwcs_service_state: started
+rpi_setup_rpwcs_service_enabled: true
+
+#### vsftpd
+rpi_setup_vsftpd_service_state: started
+rpi_setup_vsftpd_service_enabled: true
+rpi_setup_vsftpd_users: []
+rpi_setup_vsftpd_options:
+  listen: 'NO'
+  listen_ipv6: 'NO'
+  anonymous_enable: 'NO'
+  local_enable: 'YES'
+  write_enable: 'YES'
+  local_umask: '022'
+  dirmessage_enable: 'YES'
+  use_localtime: 'YES'
+  xferlog_enable: 'YES'
+  connect_from_port_20: 'YES'
+  ftpd_banner: 'Raspberry Pi FTP service'
+  secure_chroot_dir: '/var/run/vsftpd/empty'
+  pam_service_name: 'vsftpd'
+  ssl_enable: 'NO'
+  utf8_filesystem: 'YES'
+  userlist_enable: 'YES'
+  userlist_file: '/etc/vsftpd.user_list'
+  userlist_deny: 'NO'
+  local_root: '/mnt'
+
+#### docker
+rpi_setup_docker_users:
+  - "{{ rpi_setup_base_main_user_name }}"
+
+#### docker services
+rpi_setup_docker_services: []

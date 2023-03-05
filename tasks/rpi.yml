@@ -1,0 +1,53 @@
+---
+- name: Manage /boot/config.txt
+  lineinfile:
+    dest: /boot/config.txt
+    regexp: "{{ boot_option.regexp }}"
+    line: "{{ boot_option.line }}"
+  loop: "{{ rpi_setup_config_boot_options }}"
+  loop_control:
+    loop_var: boot_option
+  notify: rpi_setup_reboot_required_handler
+
+- name: Manage /etc/rc.local
+  lineinfile:
+    dest: /etc/rc.local
+    regexp: "{{ rc_local.regexp }}"
+    line: "{{ rc_local.line }}"
+    insertbefore: "^exit"
+  loop: "{{ rpi_setup_config_rc_local }}"
+  loop_control:
+    loop_var: rc_local
+
+- name: Manage resolv.conf options
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Manage dhcpcd.conf main interface options
+  blockinfile:
+    dest: /etc/dhcpcd.conf
+    block: |
+      interface {{ rpi_setup_config_dhcpcd_interface }}
+      static ip_address={{ rpi_setup_config_dhcpcd_ip }}
+      static routers={{ rpi_setup_config_dhcpcd_gateway }}
+      static domain_name_servers={{ rpi_setup_config_dhcpcd_dns_servers }}
+  notify: rpi_setup_dhcpcd_service_restart_handler
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Manage mounts
+  ansible.posix.mount:
+    fstype: "{{ rpi_mount.fstype | default(omit) }}"
+    opts: "{{ rpi_mount.opts | default(omit) }}"
+    path: "{{ rpi_mount.path }}"
+    src: "{{ rpi_mount.src | default(omit) }}"
+    state: "{{ rpi_mount.state | default('mounted') }}"
+  loop: "{{ rpi_setup_config_mounts }}"
+  loop_control:
+    loop_var: "{{ rpi_mount }}"

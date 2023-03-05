@@ -1,0 +1,31 @@
+---
+- name: Manage Docker Compose Service project folder
+  file:
+    path: "{{ rpi_setup_vsftpd_service.project_path }}"
+    state: directory
+  become: true
+
+- name: Manage Docker Compose Service project file
+  copy:
+    dest: "{{ rpi_setup_vsftpd_service.project_path }}/docker-compose.yml"
+    content: |
+      ---
+      {{ rpi_setup_vsftpd_service.configuration | to_nice_yaml(indent=2) }}
+  become: true
+
+- name: Manage Docker Compose Service systemd unit
+  template:
+    src: docker-compose.service.j2
+    dest: "/etc/systemd/system/docker-compose-{{ _rpi_setup_docker_service.name }}.service"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Manage Docker Compose Service systemd service
+  systemd:
+    name: "{{ _rpi_setup_docker_service.name }}"
+    state: "{{ _rpi_setup_docker_service.state | d(omit) }}"
+    enabled: "{{ rpi_setup_vsftpd_service.enabled | bool }}"
+    daemon_reload: true
+  become: true

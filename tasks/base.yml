@@ -1,0 +1,76 @@
+---
+- name: Manage main user
+  user:
+    name: "{{ rpi_setup_base_main_user_name }}"
+    password: "{{ rpi_setup_base_main_user_pass | d(omit) }}"
+    shell: /bin/bash
+  become: true
+
+- name: Manage base packages
+  apt:
+    name: "{{ rpi_setup_base_packages }}"
+    state: present
+    update_cache: true
+  become: true
+
+- name: Update all packages
+  apt:
+    state: latest
+    upgrade: safe
+    autoclean: true
+    autoremove: true
+  become: true
+  when: rpi_setup_base_upgrade | bool
+
+- name: Perform dist upgrade
+  apt:
+    state: latest
+    upgrade: dist
+    autoclean: true
+    autoremove: true
+  become: true
+  when: rpi_setup_base_dist_upgrade | bool
+
+- name: Manage unattended upgrades package
+  apt:
+    name: unattended-upgrades
+    state: "{{ rpi_setup_base_unattended_upgrades | bool | ternary('present', 'absent') }}"
+    purge: "{{ rpi_setup_base_unattended_upgrades | bool | ternary(false, true) }}"
+    autoclean: true
+    autoremove: true
+  become: true
+
+- name: Manage unattended upgrades systemd
+  systemd:
+    name: "{{ unattended_upgrade_service }}"
+    state: "{{ rpi_setup_base_unattended_upgrades | bool | ternary('started', 'stopped') }}"
+    enabled: "{{ rpi_setup_base_unattended_upgrades | bool }}"
+    masked: "{{ rpi_setup_base_unattended_upgrades | bool }}"
+    daemon_reload: true
+  loop:
+    - apt-daily-upgrade
+    - apt-daily
+    - apt-daily-upgrade.timer
+    - apt-daily.timer
+  loop_control:
+    loop_var: unattended_upgrade_service
+  become: true
+
+- name: Manage main user python virtualenv
+  pip:
+    name: "{{ _rpi_setup_python_modules_default + rpi_setup_base_python_modules }}"
+    virtualenv: ~/pyenv
+    virtualenv_python: "{{ rpi_setup_python_command }}"
+  become: true
+  become_user: "{{ rpi_setup_base_main_user_name }}"
+
+- name: Manage main user bashrc
+  lineinfile:
+    dest: ~/.bashrc
+    line: "{{ base_bashrc }}"
+    create: true
+  loop: "{{ rpi_setup_base_bashrc }}"
+  loop_control:
+    loop_var: base_bashrc
+  become: true
+  become_user: "{{ rpi_setup_base_main_user_name }}"

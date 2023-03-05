@@ -1,0 +1,43 @@
+---
+- name: Check Docker is installed
+  command: which docker
+  failed_when: false
+  changed_when: false
+  check_mode: false
+  become: true
+  register: _rpi_setup_docker_is_present
+
+- name: Get get-docker.sh script
+  get_url:
+    url: https://get.docker.com/
+    dest: /root/get-docker.sh
+    mode: 0775
+  become: true
+  when: _rpi_setup_docker_is_present.rc == 1
+
+- name: Run get-docker.sh script
+  command: /root/get-docker.sh
+  environment:
+    CHANNEL: stable
+  become: true
+  when: _rpi_setup_docker_is_present.rc == 1
+
+- name: Manage Docker service
+  systemd:
+    name: docker.service
+    state: started
+    enabled: true
+  become: true
+
+- name: Manage Docker users
+  user:
+    name: "{{ docker_user }}"
+    groups: docker
+    append: true
+  loop: "{{ rpi_setup_docker_users }}"
+  loop_control:
+    loop_var: docker_user
+  become: true
+
+- name: Reset connection
+  meta: reset_connection

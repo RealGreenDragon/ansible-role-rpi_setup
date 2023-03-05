@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+{% for option in rpi_setup_vsftpd_options %}
+{{ option.key }}={{ option.value }}
+{% endfor %}

@@ -1,0 +1,52 @@
+---
+- name: Manage vsftpd package
+  apt:
+    name: vsftpd
+    state: present
+    update_cache: true
+  become: true
+
+- name: Manage vsftpd users
+  user:
+    name: "{{ vsftpd_user.name }}"
+    password: "{{ vsftpd_user.pass }}"
+    uid: "{{ vsftpd_user.uid }}"
+    gid: "{{ vsftpd_user.gid }}"
+  loop: "{{ rpi_setup_vsftpd_users }}"
+  loop_control:
+    loop_var: vsftpd_user
+  become: true
+
+- name: Manage vsftpd users list
+  lineinfile:
+    dest: /etc/vsftpd.user_list
+    line: "{{ vsftpd_user.name }}"
+    create: true
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ rpi_setup_vsftpd_users }}"
+  loop_control:
+    loop_var: vsftpd_user
+  become: true
+
+- name: Manage vsftpd options
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  notify: rpi_setup_vsftpd_service_restart_handler
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Manage vsftpd service
+  systemd:
+    name: vsftpd
+    state: "{{ rpi_setup_vsftpd_service_state }}"
+    enabled: "{{ rpi_setup_vsftpd_service_enabled | bool }}"
+    daemon_reload: true
+  become: true
