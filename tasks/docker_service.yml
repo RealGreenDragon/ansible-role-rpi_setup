@@ -1,12 +1,12 @@
 ---
 - name: Manage Docker Compose Service project folder
-  file:
+  ansible.builtin.file:
     path: "{{ rpi_setup_vsftpd_service.project_path }}"
     state: directory
   become: true
 
 - name: Manage Docker Compose Service project file
-  copy:
+  ansible.builtin.copy:
     dest: "{{ rpi_setup_vsftpd_service.project_path }}/docker-compose.yml"
     content: |
       ---
@@ -14,7 +14,7 @@
   become: true
 
 - name: Manage Docker Compose Service systemd unit
-  template:
+  ansible.builtin.template:
     src: docker-compose.service.j2
     dest: "/etc/systemd/system/docker-compose-{{ _rpi_setup_docker_service.name }}.service"
     owner: root
@@ -23,7 +23,7 @@
   become: true
 
 - name: Manage Docker Compose Service systemd service
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ _rpi_setup_docker_service.name }}"
     state: "{{ _rpi_setup_docker_service.state | d(omit) }}"
     enabled: "{{ rpi_setup_vsftpd_service.enabled | bool }}"

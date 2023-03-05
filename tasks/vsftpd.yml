@@ -1,13 +1,13 @@
 ---
 - name: Manage vsftpd package
-  apt:
+  ansible.builtin.apt:
     name: vsftpd
     state: present
     update_cache: true
   become: true
 
 - name: Manage vsftpd users
-  user:
+  ansible.builtin.user:
     name: "{{ vsftpd_user.name }}"
     password: "{{ vsftpd_user.pass }}"
     uid: "{{ vsftpd_user.uid }}"
@@ -18,7 +18,7 @@
   become: true
 
 - name: Manage vsftpd users list
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/vsftpd.user_list
     line: "{{ vsftpd_user.name }}"
     create: true
@@ -31,7 +31,7 @@
   become: true
 
 - name: Manage vsftpd options
-  template:
+  ansible.builtin.template:
     src: vsftpd.conf.j2
     dest: /etc/vsftpd.conf
     owner: root
@@ -44,7 +44,7 @@
   meta: flush_handlers
 
 - name: Manage vsftpd service
-  systemd:
+  ansible.builtin.systemd:
     name: vsftpd
     state: "{{ rpi_setup_vsftpd_service_state }}"
     enabled: "{{ rpi_setup_vsftpd_service_enabled | bool }}"

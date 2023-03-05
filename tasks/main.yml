@@ -1,6 +1,6 @@
 ---
 - name: Gather facts
-  setup:
+  ansible.builtin.setup:
     gather_subset:
       - "min"
       - "!facter"
@@ -8,31 +8,31 @@
   when: ansible_fqdn is not defined
 
 - name: Manage base Raspberry Pi setup
-  include_tasks: base.yml
+  ansible.builtin.include_tasks: base.yml
   when: ('base' in rpi_setup_configure_resources)
 
 - name: Manage Raspberry Pi configurations
-  include_tasks: rpi.yml
+  ansible.builtin.include_tasks: rpi.yml
   when: ('rpi' in rpi_setup_configure_resources)
 
 - name: Reboot Raspberry Pi if required
-  include_tasks: reboot.yml
+  ansible.builtin.include_tasks: reboot.yml
   when: _rpi_setup_reboot_required
 
 - name: Manage rpwcs
-  include_tasks: rpwcs.yml
+  ansible.builtin.include_tasks: rpwcs.yml
   when: ('rpwcs' in rpi_setup_configure_resources)
 
 - name: Manage vsftpd
-  include_tasks: vsftpd.yml
+  ansible.builtin.include_tasks: vsftpd.yml
   when: ('vsftpd' in rpi_setup_configure_resources)
 
 - name: Manage Raspberry Pi Docker
-  include_tasks: docker.yml
+  ansible.builtin.include_tasks: docker.yml
   when: ('docker' in rpi_setup_configure_resources)
 
 - name: Manage Raspberry Pi Docker Compose Services
-  include_tasks: docker_services.yml
+  ansible.builtin.include_tasks: docker_services.yml
   loop: "{{ rpi_setup_docker_services }}"
   loop_control:
     loop_var: _rpi_setup_docker_service

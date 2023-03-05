@@ -1,6 +1,6 @@
 ---
 - name: Manage /boot/config.txt
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /boot/config.txt
     regexp: "{{ boot_option.regexp }}"
     line: "{{ boot_option.line }}"
@@ -10,7 +10,7 @@
   notify: rpi_setup_reboot_required_handler
 
 - name: Manage /etc/rc.local
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/rc.local
     regexp: "{{ rc_local.regexp }}"
     line: "{{ rc_local.line }}"
@@ -20,7 +20,7 @@
     loop_var: rc_local
 
 - name: Manage resolv.conf options
-  template:
+  ansible.builtin.template:
     src: resolv.conf.j2
     dest: /etc/resolv.conf
     owner: root
@@ -29,7 +29,7 @@
   become: true
 
 - name: Manage dhcpcd.conf main interface options
-  blockinfile:
+  ansible.builtin.blockinfile:
     dest: /etc/dhcpcd.conf
     block: |
       interface {{ rpi_setup_config_dhcpcd_interface }}
@@ -42,7 +42,7 @@
   meta: flush_handlers
 
 - name: Manage mounts
-  ansible.posix.mount:
+  ansible.builtin.ansible.posix.mount:
     fstype: "{{ rpi_mount.fstype | default(omit) }}"
     opts: "{{ rpi_mount.opts | default(omit) }}"
     path: "{{ rpi_mount.path }}"
