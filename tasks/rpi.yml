@@ -4,6 +4,7 @@
     dest: /boot/config.txt
     regexp: "{{ boot_option.regexp }}"
     line: "{{ boot_option.line }}"
+    state: "{{ boot_option.state | d('present') }}"
   loop: "{{ rpi_setup_config_boot_options }}"
   loop_control:
     loop_var: boot_option

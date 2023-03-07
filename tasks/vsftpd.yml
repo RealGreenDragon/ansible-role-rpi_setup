@@ -12,6 +12,7 @@
     password: "{{ vsftpd_user.pass }}"
     uid: "{{ vsftpd_user.uid }}"
     gid: "{{ vsftpd_user.gid }}"
+    groups: "{{ vsftpd_user.groups }}"
   loop: "{{ rpi_setup_vsftpd_users }}"
   loop_control:
     loop_var: vsftpd_user

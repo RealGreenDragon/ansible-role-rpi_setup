@@ -40,7 +40,7 @@ rpi_setup_base_packages:
 rpi_setup_base_python_modules: []
 rpi_setup_base_bashrc:
   - "alias ll='ls -l'"
-  - "source /home/pi/pyenv/bin/activate"
+  - "source /home/{{ rpi_setup_base_main_user_name }}/pyenv/bin/activate"
 
 #### rpi
 rpi_setup_config_boot_options: []
