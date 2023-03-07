@@ -1,6 +1,7 @@
 ---
 dependencies:
   - ansible.posix
+  - community.docker
 
 galaxy_info:
   role_name: rpi_setup

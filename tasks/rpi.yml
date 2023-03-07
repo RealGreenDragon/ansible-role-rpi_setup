@@ -7,6 +7,7 @@
   loop: "{{ rpi_setup_config_boot_options }}"
   loop_control:
     loop_var: boot_option
+  become: true
   notify: rpi_setup_reboot_required_handler
 
 - name: Manage /etc/rc.local
@@ -18,6 +19,7 @@
   loop: "{{ rpi_setup_config_rc_local }}"
   loop_control:
     loop_var: rc_local
+  become: true
 
 - name: Manage resolv.conf options
   ansible.builtin.template:
@@ -36,6 +38,7 @@
       static ip_address={{ rpi_setup_config_dhcpcd_ip }}
       static routers={{ rpi_setup_config_dhcpcd_gateway }}
       static domain_name_servers={{ rpi_setup_config_dhcpcd_dns_servers }}
+  become: true
   notify: rpi_setup_dhcpcd_service_restart_handler
 
 - name: Flush handlers
@@ -51,3 +54,4 @@
   loop: "{{ rpi_setup_config_mounts }}"
   loop_control:
     loop_var: "{{ rpi_mount }}"
+  become: true

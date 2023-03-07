@@ -8,6 +8,14 @@
     mode: 0754
   become: true
 
+- name: Manage Docker Secrets
+  community.docker.docker_secret: "{{ docker_secret }}"
+  loop: "{{ _rpi_setup_docker_service.docker_secrets | d([]) }}"
+  loop_control:
+    loop_var: docker_secret
+  become: true
+  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+
 - name: Manage Docker Compose Service project file
   ansible.builtin.copy:
     dest: "{{ _rpi_setup_docker_service.project_path }}/docker-compose.yml"

@@ -3,6 +3,7 @@
   ansible.builtin.systemd:
     name: vsftpd
     state: restarted
+  become: true
   when: rpi_setup_vsftpd_service_state != 'stopped'
   listen: rpi_setup_vsftpd_service_restart_handler
 
@@ -10,6 +11,7 @@
   ansible.builtin.systemd:
     name: dhcpcd
     state: restarted
+  become: true
   listen: rpi_setup_dhcpcd_service_restart_handler
 
 - name: Raspberry Pi reboot is required
