@@ -91,4 +91,9 @@ rpi_setup_docker_users:
   - "{{ rpi_setup_base_main_user_name }}"
 
 #### docker services
+rpi_setup_docker_service_base_systemd_dependencies:
+  - local-fs.target
+  - network.target
+  - remote-fs.target
+  - docker.service
 rpi_setup_docker_services: []
