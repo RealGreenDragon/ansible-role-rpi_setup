@@ -16,6 +16,8 @@ rpi_setup_configure_resources:
 
 #### Base
 rpi_setup_base_main_user_name: pi
+rpi_setup_base_main_user_groups:
+  - users
 rpi_setup_base_upgrade: true
 rpi_setup_base_dist_upgrade: false
 rpi_setup_base_packages:

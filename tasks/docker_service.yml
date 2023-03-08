@@ -1,4 +1,17 @@
 ---
+- name: Manage Docker Compose Service users
+  ansible.builtin.user:
+    name: "{{ service_user.name }}"
+    password: "{{ service_user.password | password_hash('sha512') }}"
+    uid: "{{ service_user.uid }}"
+    gid: "{{ service_user.gid }}"
+    groups: "{{ service_user.groups | d(omit) }}"
+    shell: "{{ service_user.shell | d(omit) }}"
+  loop: "{{ _rpi_setup_docker_service.users }}"
+  loop_control:
+    loop_var: service_user
+  become: true
+
 - name: Manage Docker Compose Service project folder
   ansible.builtin.file:
     path: "{{ _rpi_setup_docker_service.project_path }}"

@@ -2,8 +2,10 @@
 - name: Manage main user
   ansible.builtin.user:
     name: "{{ rpi_setup_base_main_user_name }}"
-    password: "{{ rpi_setup_base_main_user_pass | d(omit) }}"
+    password: "{{ rpi_setup_base_main_user_password | d(omit) }}"
     shell: /bin/bash
+    groups: "{{ rpi_setup_base_main_user_groups | d(omit) }}"
+    append: true
   become: true
 
 - name: Update packages cache
