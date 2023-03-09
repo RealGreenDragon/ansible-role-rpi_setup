@@ -29,12 +29,24 @@
   become: true
   no_log: "{{ rpi_setup_nolog_override | d(true) }}"
 
+- name: Manage Docker Compose Service env file
+  ansible.builtin.copy:
+    dest: "{{ _rpi_setup_docker_service.project_path }}/.env"
+    content: |
+      {{ _rpi_setup_docker_service.env }}
+    create: true
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
 - name: Manage Docker Compose Service project file
   ansible.builtin.copy:
     dest: "{{ _rpi_setup_docker_service.project_path }}/docker-compose.yml"
     content: |
       ---
       {{ _rpi_setup_docker_service.configuration | to_nice_yaml(indent=2) }}
+    create: true
     owner: root
     group: root
     mode: 0644
