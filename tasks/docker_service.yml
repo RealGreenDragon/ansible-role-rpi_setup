@@ -7,7 +7,7 @@
     gid: "{{ service_user.gid }}"
     groups: "{{ service_user.groups | d(omit) }}"
     shell: "{{ service_user.shell | d(omit) }}"
-  loop: "{{ _rpi_setup_docker_service.users }}"
+  loop: "{{ _rpi_setup_docker_service.users | d(false, true) }}"
   loop_control:
     loop_var: service_user
   become: true
@@ -21,12 +21,40 @@
     mode: 0754
   become: true
 
-- name: Manage Docker Secrets
-  community.docker.docker_secret: "{{ docker_secret }}"
-  loop: "{{ _rpi_setup_docker_service.docker_secrets | d([]) }}"
+- name: Manage Docker Secrets (external)
+  community.docker.docker_secret: "{{ docker_secret_external.configuration }}"
+  loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'external') }}"
   loop_control:
-    loop_var: docker_secret
+    loop_var: docker_secret_external
   become: true
+  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'external') | length
+  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+
+- name: Manage Docker Compose Service secrets folder
+  ansible.builtin.file:
+    path: "{{ _rpi_setup_docker_service.project_path }}/secrets"
+    state: directory
+    owner: root
+    group: root
+    mode: 0754
+  become: true
+  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
+  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+
+- name: Manage Docker Secrets (file)
+  ansible.builtin.copy:
+    dest: "{{ _rpi_setup_docker_service.project_path }}/secrets/{{ docker_secret_file.filename }}"
+    content: |
+      {{ docker_secret_file.content }}
+    create: true
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'file') }}"
+  loop_control:
+    loop_var: docker_secret_file
+  become: true
+  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
   no_log: "{{ rpi_setup_nolog_override | d(true) }}"
 
 - name: Manage Docker Compose Service env file
@@ -39,6 +67,7 @@
     group: root
     mode: 0644
   become: true
+  when: _rpi_setup_docker_service.docker_env | d(false, true)
 
 - name: Manage Docker Compose Service project file
   ansible.builtin.copy:
