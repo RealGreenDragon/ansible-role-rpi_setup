@@ -6,9 +6,9 @@ To install Raspberry Pi OS in the SD card the official tool [Raspberry Pi Imager
 
 ## Requirements
 
-This role requires following collections:
+Requirements listed in `meta/requirements.yml`, installable via Ansible-Galaxy with the following command:
 
-* [ansible.posix](https://github.com/ansible-collections/ansible.posix)
+    ansible-galaxy install -r meta/requirements.yml
 
 ## Role Variables
 
@@ -20,6 +20,8 @@ Available variables listed in `defaults/main.yml` file.
 - hosts: rpi
   gather_facts: false
   become: true
+  vars_files:
+    - rpi_configs.yml
   roles:
     - realgreendragon.rpi_setup
 ```
