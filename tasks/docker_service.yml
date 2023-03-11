@@ -1,4 +1,19 @@
 ---
+#### Docker Compose Service Images
+- name: Manage Docker Compose Service Images
+  community.docker.docker_image:
+    name: "{{ docker_image }}"
+    source: pull
+    force_source: "{{ _rpi_setup_docker_service.docker_images_force | d(omit) }}"
+  loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'external') }}"
+  loop_control:
+    loop_var: docker_image
+  become: true
+  when: _rpi_setup_docker_service.docker_images | d([], true) | length
+  async: "{{ asnible_check_mode | ternary(0, 1800) }}"
+  poll: 10
+
+
 #### Docker Compose Service Users
 - name: Manage Docker Compose Service users
   ansible.builtin.user:
