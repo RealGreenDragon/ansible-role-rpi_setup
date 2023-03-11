@@ -6,9 +6,9 @@ To install Raspberry Pi OS in the SD card the official tool [Raspberry Pi Imager
 
 ## Requirements
 
-Requirements listed in `meta/requirements.yml`, installable via Ansible-Galaxy with the following command:
+Requirements listed in `requirements.yml` file, installable via Ansible-Galaxy with the following command:
 
-    ansible-galaxy install -r meta/requirements.yml
+    ansible-galaxy install -r requirements.yml
 
 ## Role Variables
 
