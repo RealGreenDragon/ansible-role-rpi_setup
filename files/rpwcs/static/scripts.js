@@ -54,6 +54,6 @@ function raspi_exec_service_op(service_name, op_name, elem_id, reload) {
         }
     }
     // exec request
-    xmlHttp.open("GET", url, true); // true for asynchronous 
+    xmlHttp.open("GET", url, true); // true for asynchronous
     xmlHttp.send(null);
 }
