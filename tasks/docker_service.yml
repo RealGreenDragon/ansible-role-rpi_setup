@@ -66,7 +66,6 @@
     dest: "{{ _rpi_setup_docker_service.project_path }}/docker_secrets/{{ docker_secret_file.filename }}"
     content: |
       {{ docker_secret_file.content }}
-    create: true
     owner: root
     group: root
     mode: 0640
@@ -84,7 +83,6 @@
     dest: "{{ _rpi_setup_docker_service.project_path }}/.env"
     content: |
       {{ _rpi_setup_docker_service.docker_env }}
-    create: true
     owner: root
     group: root
     mode: 0640
@@ -97,7 +95,6 @@
     dest: "{{ _rpi_setup_docker_service.project_path }}/dynamic_env.sh"
     content: |
       {{ _rpi_setup_docker_service.docker_dynamic_env }}
-    create: true
     owner: root
     group: root
     mode: 0640
@@ -113,7 +110,6 @@
     content: |
       ---
       {{ _rpi_setup_docker_service.configuration | to_nice_yaml(indent=2) }}
-    create: true
     owner: root
     group: root
     mode: 0640

@@ -12,7 +12,6 @@
   ansible.builtin.copy:
     src: rpwcs
     dest: "{{ _rpi_setup_rpwcs_install_path }}"
-    create: true
     owner: root
     group: root
     mode: 0644
