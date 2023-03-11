@@ -1,4 +1,5 @@
 ---
+#### Docker Service Users
 - name: Manage Docker Compose Service users
   ansible.builtin.user:
     name: "{{ service_user.name }}"
@@ -12,16 +13,29 @@
     loop_var: service_user
   become: true
 
+
+#### Docker Service folders
 - name: Manage Docker Compose Service project folder
   ansible.builtin.file:
     path: "{{ _rpi_setup_docker_service.project_path }}"
     state: directory
     owner: root
     group: root
-    mode: 0754
+    mode: 0750
   become: true
 
-- name: Manage Docker Secrets (external)
+- name: Manage Docker Compose Service secrets folder
+  ansible.builtin.file:
+    path: "{{ _rpi_setup_docker_service.project_path }}/docker_secrets"
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+  become: true
+  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
+  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+
+- name: Manage Docker Compose Global Secrets (external)
   community.docker.docker_secret: "{{ docker_secret_external.configuration }}"
   loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'external') }}"
   loop_control:
@@ -30,26 +44,15 @@
   when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'external') | length
   no_log: "{{ rpi_setup_nolog_override | d(true) }}"
 
-- name: Manage Docker Compose Service secrets folder
-  ansible.builtin.file:
-    path: "{{ _rpi_setup_docker_service.project_path }}/secrets"
-    state: directory
-    owner: root
-    group: root
-    mode: 0754
-  become: true
-  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
-  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
-
-- name: Manage Docker Secrets (file)
+- name: Manage Docker Compose Service Secrets (file)
   ansible.builtin.copy:
-    dest: "{{ _rpi_setup_docker_service.project_path }}/secrets/{{ docker_secret_file.filename }}"
+    dest: "{{ _rpi_setup_docker_service.project_path }}/docker_secrets/{{ docker_secret_file.filename }}"
     content: |
       {{ docker_secret_file.content }}
     create: true
     owner: root
     group: root
-    mode: 0644
+    mode: 0640
   loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'file') }}"
   loop_control:
     loop_var: docker_secret_file
@@ -57,7 +60,9 @@
   when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
   no_log: "{{ rpi_setup_nolog_override | d(true) }}"
 
-- name: Manage Docker Compose Service env file
+
+#### Docker Service environment
+- name: Manage Docker Compose Service static env file
   ansible.builtin.copy:
     dest: "{{ _rpi_setup_docker_service.project_path }}/.env"
     content: |
@@ -65,10 +70,26 @@
     create: true
     owner: root
     group: root
-    mode: 0644
+    mode: 0640
   become: true
   when: _rpi_setup_docker_service.docker_env | d(false, true)
+  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
 
+- name: Manage Docker Compose Service dynamic env script
+  ansible.builtin.copy:
+    dest: "{{ _rpi_setup_docker_service.project_path }}/dynamic_env.sh"
+    content: |
+      {{ _rpi_setup_docker_service.docker_dynamic_env }}
+    create: true
+    owner: root
+    group: root
+    mode: 0740
+  become: true
+  when: _rpi_setup_docker_service.docker_dynamic_env | d(false, true)
+  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+
+
+#### Docker Service project
 - name: Manage Docker Compose Service project file
   ansible.builtin.copy:
     dest: "{{ _rpi_setup_docker_service.project_path }}/docker-compose.yml"
@@ -78,7 +99,7 @@
     create: true
     owner: root
     group: root
-    mode: 0644
+    mode: 0640
   become: true
 
 - name: Manage Docker Compose Service systemd unit

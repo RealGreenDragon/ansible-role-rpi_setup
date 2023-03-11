@@ -12,12 +12,16 @@
   ansible.builtin.apt:
     update_cache: true
   become: true
+  async: "{{ asnible_check_mode | ternary(0, 60) }}"
+  poll: 10
 
 - name: Manage base packages
   ansible.builtin.apt:
     name: "{{ rpi_setup_base_packages }}"
     state: present
   become: true
+  async: "{{ asnible_check_mode | ternary(0, 60) }}"
+  poll: 10
 
 - name: Update all packages
   ansible.builtin.apt:
@@ -27,6 +31,8 @@
     autoremove: true
   become: true
   when: rpi_setup_base_upgrade | bool
+  async: "{{ asnible_check_mode | ternary(0, 1800) }}"
+  poll: 30
 
 - name: Perform dist upgrade
   ansible.builtin.apt:
@@ -36,6 +42,8 @@
     autoremove: true
   become: true
   when: rpi_setup_base_dist_upgrade | bool
+  async: "{{ asnible_check_mode | ternary(0, 3600) }}"
+  poll: 30
 
 - name: Manage unattended upgrades package
   ansible.builtin.apt:
