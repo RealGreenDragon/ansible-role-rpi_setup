@@ -46,18 +46,18 @@
     group: root
     mode: 0750
   become: true
-  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
+  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'eq', 'file') | length
   no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 
 #### Docker Compose Service secrets
 - name: Manage Docker Compose Global Secrets (external) # noqa args[module]
   community.docker.docker_secret: "{{ docker_secret_external.configuration }}"
-  loop: "{{ _rpi_setup_docker_service.docker_secrets | d({}, true) | selectattr('type', 'external') }}"
+  loop: "{{ _rpi_setup_docker_service.docker_secrets | d({}, true) | selectattr('type', 'eq', 'external') }}"
   loop_control:
     loop_var: docker_secret_external
   become: true
-  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'external') | length
+  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'eq', 'external') | length
   no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 - name: Manage Docker Compose Service Secrets (file)
@@ -68,11 +68,11 @@
     owner: root
     group: root
     mode: 0640
-  loop: "{{ _rpi_setup_docker_service.docker_secrets | d({}, true) | selectattr('type', 'file') }}"
+  loop: "{{ _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'eq', 'file') }}"
   loop_control:
     loop_var: docker_secret_file
   become: true
-  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
+  when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'eq', 'file') | length
   no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 
