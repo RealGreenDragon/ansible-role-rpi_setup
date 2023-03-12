@@ -52,8 +52,8 @@
     masked: "{{ rpi_setup_apt_unattended_upgrades | bool }}"
     daemon_reload: true
   loop:
-    - apt-daily-upgrade
-    - apt-daily
+    - apt-daily-upgrade.service
+    - apt-daily.service
     - apt-daily-upgrade.timer
     - apt-daily.timer
   loop_control:

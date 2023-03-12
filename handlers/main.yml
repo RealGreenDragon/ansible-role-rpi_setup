@@ -5,7 +5,7 @@
 
 - name: Restart vsftpd
   ansible.builtin.systemd:
-    name: vsftpd
+    name: vsftpd.service
     state: restarted
   become: true
   when: rpi_setup_vsftpd_service_state != 'stopped'

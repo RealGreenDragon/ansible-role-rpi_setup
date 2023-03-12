@@ -45,7 +45,7 @@
 
 - name: Manage vsftpd service
   ansible.builtin.systemd:
-    name: vsftpd
+    name: vsftpd.service
     state: "{{ rpi_setup_vsftpd_service_state }}"
     enabled: "{{ rpi_setup_vsftpd_service_enabled | bool }}"
     daemon_reload: true
