@@ -47,7 +47,7 @@ rpi_setup_apt_base_packages:
 rpi_setup_user_name: pi
 rpi_setup_user_groups:
   - users
-rpi_setup_user_python_env: "/home/{{ rpi_setup_base_main_user_name }}/pyenv"
+rpi_setup_user_python_env: "/home/{{ rpi_setup_user_name }}/pyenv"
 rpi_setup_user_python_modules: []
 rpi_setup_user_bashrc:
   - "alias ll='ls -l'"
@@ -116,7 +116,7 @@ rpi_setup_vsftpd_options:
 
 #### docker
 rpi_setup_docker_users:
-  - "{{ rpi_setup_base_main_user_name }}"
+  - "{{ rpi_setup_user_name }}"
 
 #### docker services
 rpi_setup_docker_services_base_systemd_dependencies:
