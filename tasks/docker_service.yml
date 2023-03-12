@@ -48,7 +48,7 @@
     mode: 0750
   become: true
   when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
-  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+  no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 
 #### Docker Compose Service secrets
@@ -59,7 +59,7 @@
     loop_var: docker_secret_external
   become: true
   when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'external') | length
-  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+  no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 - name: Manage Docker Compose Service Secrets (file)
   ansible.builtin.copy:
@@ -74,7 +74,7 @@
     loop_var: docker_secret_file
   become: true
   when: _rpi_setup_docker_service.docker_secrets | d([], true) | selectattr('type', 'file') | length
-  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+  no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 
 #### Docker Compose Service environment
@@ -88,7 +88,7 @@
     mode: 0640
   become: true
   when: _rpi_setup_docker_service.docker_env | d(false, true)
-  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+  no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 - name: Manage Docker Compose Service dynamic env script
   ansible.builtin.copy:
@@ -100,7 +100,7 @@
     mode: 0640
   become: true
   when: _rpi_setup_docker_service.docker_dynamic_env | d(false, true)
-  no_log: "{{ rpi_setup_nolog_override | d(true) }}"
+  no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 
 #### Docker Compose Service project
