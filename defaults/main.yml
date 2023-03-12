@@ -94,7 +94,7 @@ rpi_setup_vsftpd_service_state: started
 rpi_setup_vsftpd_service_enabled: true
 rpi_setup_vsftpd_users: []
 rpi_setup_vsftpd_options:
-  listen: 'NO'
+  listen: 'YES'
   listen_ipv6: 'NO'
   anonymous_enable: 'NO'
   local_enable: 'YES'
