@@ -84,7 +84,7 @@ rpi_setup_mounts: []
 _rpi_setup_rpwcs_python_modules:
   - flask
   - requests
-_rpi_setup_rpwcs_install_path: /var/www/rpwcs
+_rpi_setup_rpwcs_install_path: /var/www
 _rpi_setup_rpwcs_venv_path: "{{ _rpi_setup_rpwcs_install_path }}/pyenv"
 rpi_setup_rpwcs_service_state: started
 rpi_setup_rpwcs_service_enabled: true
