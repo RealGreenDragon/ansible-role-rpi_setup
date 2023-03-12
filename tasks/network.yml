@@ -23,14 +23,15 @@
     group: root
     mode: 0644
   become: true
+  notify: rpi_setup_gather_info_handler
 
 - name: Manage dhcpcd.conf main interface static options
   ansible.builtin.blockinfile:
     dest: /etc/dhcpcd.conf
     block: |
-      interface {{ rpi_setup_config_dhcpcd_interface }}
-      static ip_address={{ rpi_setup_config_dhcpcd_ip }}
-      static routers={{ rpi_setup_config_dhcpcd_gateway }}
-      static domain_name_servers={{ rpi_setup_config_dhcpcd_dns_servers | join(' ') }}
+      interface {{ rpi_setup_network_dhcpcd_interface }}
+      static ip_address={{ rpi_setup_network_dhcpcd_ip }}
+      static routers={{ rpi_setup_network_dhcpcd_gateway }}
+      static domain_name_servers={{ rpi_setup_network_dhcpcd_name_servers | join(' ') }}
   become: true
   notify: rpi_setup_reboot_required_handler

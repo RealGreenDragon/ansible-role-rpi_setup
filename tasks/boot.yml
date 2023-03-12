@@ -16,6 +16,7 @@
     dest: /etc/rc.local
     regexp: "{{ rc_local.regexp }}"
     line: "{{ rc_local.line }}"
+    state: "{{ rc_local.state | d('present') }}"
     insertbefore: "^exit"
   loop: "{{ rpi_setup_boot_rc_local }}"
   loop_control:

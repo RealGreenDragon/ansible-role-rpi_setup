@@ -10,6 +10,8 @@ rpi_setup_configure_resources:
   - apt
   - user
   - boot
+  - locale
+  - time
   - network
   - mounts
   - rpwcs
@@ -17,7 +19,7 @@ rpi_setup_configure_resources:
   - docker
   - docker_services
 
-#### APT
+#### apt
 rpi_setup_apt_unattended_upgrades: false
 rpi_setup_apt_upgrade: true
 rpi_setup_apt_dist_upgrade: false
@@ -55,18 +57,25 @@ rpi_setup_user_bashrc:
 rpi_setup_boot_options: []
 rpi_setup_boot_rc_local: []
 
+#### locale
+rpi_setup_locale_lang: "en_GB.UTF-8"
+
+#### time
+rpi_setup_time_zone: "Europe/Rome"
+
 #### network
+rpi_setup_network_hostname: "raspberrypi"
 rpi_setup_network_aliases: []
 rpi_setup_network_resolv_conf:
   search: []
-  domain: ''
+  domain: ""
   sortlist: []
-  options: ''
+  options: ""
   nameservers: []
 rpi_setup_network_dhcpcd_interface: eth0
 rpi_setup_network_dhcpcd_ip: []
 rpi_setup_network_dhcpcd_gateway: []
-rpi_setup_network_dhcpcd_dns_servers: []
+rpi_setup_network_dhcpcd_name_servers: "{{ rpi_setup_network_resolv_conf.nameservers }}"
 
 #### mounts
 rpi_setup_mounts: []
@@ -76,7 +85,7 @@ _rpi_setup_rpwcs_python_modules:
   - flask
   - requests
 _rpi_setup_rpwcs_install_path: /var/www/rpwcs
-_rpi_setup_rpwcs_venv_path: "{{ _rpi_setup_rpwcs_install_path }}/venv"
+_rpi_setup_rpwcs_venv_path: "{{ _rpi_setup_rpwcs_install_path }}/pyenv"
 rpi_setup_rpwcs_service_state: started
 rpi_setup_rpwcs_service_enabled: true
 
@@ -110,7 +119,7 @@ rpi_setup_docker_users:
   - "{{ rpi_setup_base_main_user_name }}"
 
 #### docker services
-rpi_setup_docker_service_base_systemd_dependencies:
+rpi_setup_docker_services_base_systemd_dependencies:
   - local-fs.target
   - network.target
   - remote-fs.target

@@ -5,7 +5,7 @@
 - name: Check architecture and OS version are supported
   ansible.builtin.assert:
     that:
-      - ansible_architecture in ('armhf', 'aarch64')
+      - ansible_architecture in ('armhf', 'arm64')
       - ansible_distribution == 'debian'
       - ansible_distribution_major_version >= 11
     msg: "This role requires Debian 11 or newer on ARM x86/64"
@@ -21,6 +21,14 @@
 - name: Manage Raspberry Pi boot configurations
   ansible.builtin.include_tasks: boot.yml
   when: ('boot' in rpi_setup_configure_resources)
+
+- name: Manage Raspberry Pi locale configurations
+  ansible.builtin.include_tasks: locale.yml
+  when: ('locale' in rpi_setup_configure_resources)
+
+- name: Manage Raspberry Pi time configurations
+  ansible.builtin.include_tasks: time.yml
+  when: ('time' in rpi_setup_configure_resources)
 
 - name: Manage Raspberry Pi network configurations
   ansible.builtin.include_tasks: network.yml

@@ -16,7 +16,6 @@
 
 - name: Update all packages
   ansible.builtin.apt:
-    state: latest # noqa package-latest
     upgrade: safe
     autoclean: true
     autoremove: true
@@ -27,7 +26,6 @@
 
 - name: Perform dist upgrade
   ansible.builtin.apt:
-    state: latest # noqa package-latest
     upgrade: dist
     autoclean: true
     autoremove: true
@@ -35,6 +33,7 @@
   when: rpi_setup_apt_dist_upgrade | bool
   async: "{{ ansible_check_mode | ternary(0, 3600) }}"
   poll: 30
+  notify: rpi_setup_reboot_required_handler
 
 - name: Manage unattended upgrades package
   ansible.builtin.apt:
