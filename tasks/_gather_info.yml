@@ -1,0 +1,7 @@
+---
+- name: Gather info
+  ansible.builtin.setup:
+    gather_subset:
+      - "min"
+      - "!facter"
+  become: true

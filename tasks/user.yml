@@ -1,0 +1,29 @@
+---
+- name: Manage main user
+  ansible.builtin.user:
+    name: "{{ rpi_setup_user_name }}"
+    password: "{{ rpi_setup_user_password | d(omit) }}"
+    shell: /bin/bash
+    groups: "{{ rpi_setup_user_groups | d(omit) }}"
+    append: true
+  become: true
+
+- name: Manage main user python virtualenv
+  ansible.builtin.pip:
+    name: "{{ _rpi_setup_python_modules_default + rpi_setup_user_python_modules }}"
+    virtualenv: "{{ rpi_setup_user_python_env }}"
+    virtualenv_python: "{{ rpi_setup_python_command }}"
+  become: true
+  become_user: "{{ rpi_setup_user_name }}"
+
+- name: Manage main user bashrc
+  ansible.builtin.lineinfile:
+    dest: ~/.bashrc
+    line: "{{ base_bashrc }}"
+    create: true
+    mode: 0644
+  loop: "{{ rpi_setup_user_bashrc }}"
+  loop_control:
+    loop_var: base_bashrc
+  become: true
+  become_user: "{{ rpi_setup_user_name }}"

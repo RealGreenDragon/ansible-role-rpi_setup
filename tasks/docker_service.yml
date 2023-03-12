@@ -10,7 +10,7 @@
     loop_var: docker_image
   become: true
   when: _rpi_setup_docker_service.docker_images | d([], true) | length
-  async: "{{ asnible_check_mode | ternary(0, 1800) }}"
+  async: "{{ ansible_check_mode | ternary(0, 1800) }}"
   poll: 10
 
 

@@ -7,20 +7,20 @@ _rpi_setup_python_modules_default:
   - setuptools
 rpi_setup_python_command: python3.9
 rpi_setup_configure_resources:
-  - base
-  - rpi
+  - apt
+  - user
+  - boot
+  - network
+  - mounts
   - rpwcs
   - vsftpd
   - docker
   - docker_services
 
-#### Base
-rpi_setup_base_main_user_name: pi
-rpi_setup_base_main_user_groups:
-  - users
-rpi_setup_base_upgrade: true
-rpi_setup_base_dist_upgrade: false
-rpi_setup_base_packages:
+#### APT
+rpi_setup_apt_upgrade: true
+rpi_setup_apt_dist_upgrade: false
+rpi_setup_apt_base_packages:
   - apt-transport-https
   - build-essential
   - ca-certificates
@@ -39,20 +39,36 @@ rpi_setup_base_packages:
   - vim
   - wget
   - zip
-rpi_setup_base_python_modules: []
-rpi_setup_base_bashrc:
-  - "alias ll='ls -l'"
-  - "source /home/{{ rpi_setup_base_main_user_name }}/pyenv/bin/activate"
 
-#### rpi
-rpi_setup_config_boot_options: []
-rpi_setup_config_rc_local: []
-rpi_setup_config_resolv_nameservers: []
-rpi_setup_config_dhcpcd_interface: eth0
-rpi_setup_config_dhcpcd_ip: []
-rpi_setup_config_dhcpcd_gateway: []
-rpi_setup_config_dhcpcd_dns_servers: []
-rpi_setup_config_mounts: []
+#### user
+rpi_setup_user_name: pi
+rpi_setup_user_groups:
+  - users
+rpi_setup_user_python_env: "/home/{{ rpi_setup_base_main_user_name }}/pyenv"
+rpi_setup_user_python_modules: []
+rpi_setup_user_bashrc:
+  - "alias ll='ls -l'"
+  - "source {{ rpi_setup_user_python_env }}/bin/activate"
+
+#### boot
+rpi_setup_boot_options: []
+rpi_setup_boot_rc_local: []
+
+#### network
+rpi_setup_network_aliases: []
+rpi_setup_network_resolv_conf:
+  search: []
+  domain: ''
+  sortlist: []
+  options: ''
+  nameservers: []
+rpi_setup_network_dhcpcd_interface: eth0
+rpi_setup_network_dhcpcd_ip: []
+rpi_setup_network_dhcpcd_gateway: []
+rpi_setup_network_dhcpcd_dns_servers: []
+
+#### mounts
+rpi_setup_mounts: []
 
 #### rpwcs
 _rpi_setup_rpwcs_python_modules:

@@ -1,0 +1,23 @@
+---
+- name: Manage /boot/config.txt
+  ansible.builtin.lineinfile:
+    dest: /boot/config.txt
+    regexp: "{{ boot_option.regexp }}"
+    line: "{{ boot_option.line }}"
+    state: "{{ boot_option.state | d('present') }}"
+  loop: "{{ rpi_setup_boot_options }}"
+  loop_control:
+    loop_var: boot_option
+  become: true
+  notify: rpi_setup_reboot_required_handler
+
+- name: Manage /etc/rc.local
+  ansible.builtin.lineinfile:
+    dest: /etc/rc.local
+    regexp: "{{ rc_local.regexp }}"
+    line: "{{ rc_local.line }}"
+    insertbefore: "^exit"
+  loop: "{{ rpi_setup_boot_rc_local }}"
+  loop_control:
+    loop_var: rc_local
+  become: true

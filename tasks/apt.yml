@@ -1,0 +1,62 @@
+---
+- name: Update packages cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  async: "{{ ansible_check_mode | ternary(0, 60) }}"
+  poll: 10
+
+- name: Manage base packages
+  ansible.builtin.apt:
+    name: "{{ rpi_setup_apt_base_packages }}"
+    state: present
+  become: true
+  async: "{{ ansible_check_mode | ternary(0, 60) }}"
+  poll: 10
+
+- name: Update all packages
+  ansible.builtin.apt:
+    state: latest # noqa package-latest
+    upgrade: safe
+    autoclean: true
+    autoremove: true
+  become: true
+  when: rpi_setup_apt_upgrade | bool
+  async: "{{ ansible_check_mode | ternary(0, 1800) }}"
+  poll: 30
+
+- name: Perform dist upgrade
+  ansible.builtin.apt:
+    state: latest # noqa package-latest
+    upgrade: dist
+    autoclean: true
+    autoremove: true
+  become: true
+  when: rpi_setup_apt_dist_upgrade | bool
+  async: "{{ ansible_check_mode | ternary(0, 3600) }}"
+  poll: 30
+
+- name: Manage unattended upgrades package
+  ansible.builtin.apt:
+    name: unattended-upgrades
+    state: "{{ rpi_setup_apt_unattended_upgrades | bool | ternary('present', 'absent') }}"
+    purge: "{{ rpi_setup_apt_unattended_upgrades | bool | ternary(false, true) }}"
+    autoclean: true
+    autoremove: true
+  become: true
+
+- name: Manage unattended upgrades systemd
+  ansible.builtin.systemd:
+    name: "{{ unattended_upgrade_service }}"
+    state: "{{ rpi_setup_apt_unattended_upgrades | bool | ternary('started', 'stopped') }}"
+    enabled: "{{ rpi_setup_apt_unattended_upgrades | bool }}"
+    masked: "{{ rpi_setup_apt_unattended_upgrades | bool }}"
+    daemon_reload: true
+  loop:
+    - apt-daily-upgrade
+    - apt-daily
+    - apt-daily-upgrade.timer
+    - apt-daily.timer
+  loop_control:
+    loop_var: unattended_upgrade_service
+  become: true

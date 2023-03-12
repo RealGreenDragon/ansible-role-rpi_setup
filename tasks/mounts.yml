@@ -1,0 +1,12 @@
+---
+- name: Manage mounts
+  ansible.posix.mount:
+    fstype: "{{ rpi_mount.fstype | default(omit) }}"
+    opts: "{{ rpi_mount.opts | default(omit) }}"
+    path: "{{ rpi_mount.path }}"
+    src: "{{ rpi_mount.src | default(omit) }}"
+    state: "{{ rpi_mount.state | default('mounted') }}"
+  loop: "{{ rpi_setup_config_mounts }}"
+  loop_control:
+    loop_var: "{{ rpi_mount }}"
+  become: true

@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+{% if 'search' in rpi_setup_network_resolv_conf and rpi_setup_network_resolv_conf.search %}
+search {{ rpi_setup_network_resolv_conf.search | join(' ') }}
+{% endif %}
+{% if 'domain' in rpi_setup_network_resolv_conf and rpi_setup_network_resolv_conf.domain %}
+domain {{ rpi_setup_network_resolv_conf.domain }}
+{% endif %}
+{% if 'sortlist' in rpi_setup_network_resolv_conf and rpi_setup_network_resolv_conf.sortlist %}
+{% for sl in rpi_setup_network_resolv_conf.sortlist %}
+sortlist {{ sl }}
+{% endfor %}
+{% endif %}
+{% if 'options' in rpi_setup_network_resolv_conf and rpi_setup_network_resolv_conf.options %}
+options {{ rpi_setup_network_resolv_conf.options | join(' ') }}
+{% endif %}
+{% if 'nameservers' in rpi_setup_network_resolv_conf and rpi_setup_network_resolv_conf.nameservers %}
+{% for ns in rpi_setup_network_resolv_conf.nameservers %}
+nameserver {{ ns }}
+{% endfor %}
+{% endif %}

@@ -1,4 +1,8 @@
 ---
+- name: Gather info
+  ansible.builtin.include_tasks: _gather_info.yml
+  listen: rpi_setup_gather_info_handler
+
 - name: Restart vsftpd
   ansible.builtin.systemd:
     name: vsftpd
@@ -6,13 +10,6 @@
   become: true
   when: rpi_setup_vsftpd_service_state != 'stopped'
   listen: rpi_setup_vsftpd_service_restart_handler
-
-- name: Restart dhcpcd
-  ansible.builtin.systemd:
-    name: dhcpcd
-    state: restarted
-  become: true
-  listen: rpi_setup_dhcpcd_service_restart_handler
 
 - name: Raspberry Pi reboot is required
   ansible.builtin.set_fact:

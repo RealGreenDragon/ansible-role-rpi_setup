@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+# Localhost aliases
+127.0.0.1 localhost
+::1       localhost ip6-localhost ip6-loopback
+ff02::1   ip6-allnodes
+ff02::2   ip6-allrouters
+
+# <hostname>.local alias
+127.0.1.1 {{ rpi_setup_network_hostname }}
+
+{%- if rpi_setup_network_aliases -%}
+# Custom aliases
+{% for na in rpi_setup_network_aliases %}
+{{ na.ip }} {{ na.aliases | join(' ') }}
+{% endfor %}
+{%- endif -%}
