@@ -1,7 +1,7 @@
 [Unit]
 Description = {{ _rpi_setup_docker_service.pretty_name }} service with Docker
-Requires = {{ (rpi_setup_docker_services_base_systemd_dependencies | d([], true)) + (_rpi_setup_docker_service.systemd_dependencies | d([], true)) | join(' ') }}
-After = {{ (rpi_setup_docker_services_base_systemd_dependencies | d([], true)) + (_rpi_setup_docker_service.systemd_dependencies | d([], true)) | join(' ') }}
+Requires = {{ ((rpi_setup_docker_services_base_systemd_dependencies | d([], true) + (_rpi_setup_docker_service.systemd_dependencies | d([], true)) | join(' ') }}
+After = {{ ((rpi_setup_docker_services_base_systemd_dependencies | d([], true) + (_rpi_setup_docker_service.systemd_dependencies | d([], true)) | join(' ') }}
 
 [Service]
 Type = oneshot
