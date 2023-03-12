@@ -104,12 +104,14 @@
 
 
 #### Docker Compose Service project
+# Added regex_replace after to_nice_yaml to apply indent=2 also at list elements
+# Source: https://github.com/ansible/ansible/issues/66932#issuecomment-580300418
 - name: Manage Docker Compose Service project file
   ansible.builtin.copy:
     dest: "{{ _rpi_setup_docker_service.project_path }}/docker-compose.yml"
     content: |
       ---
-      {{ _rpi_setup_docker_service.configuration | to_nice_yaml(indent=2) }}
+      {{ _rpi_setup_docker_service.configuration | to_nice_yaml(indent=2, width=9999, sort_keys=False) | regex_replace('\n( *  - )', '\n  \\1') }}
     owner: root
     group: root
     mode: 0640
