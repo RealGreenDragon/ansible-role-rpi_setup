@@ -94,7 +94,6 @@
     dest: "{{ _rpi_setup_docker_service.project_path }}/dynamic_env_start.sh"
     content: |
       {{ _rpi_setup_docker_service.docker_dynamic_env }}
-
       # Start Docker Compose service
       /usr/bin/docker compose up -d --remove-orphans
       exit $?
@@ -110,7 +109,6 @@
     dest: "{{ _rpi_setup_docker_service.project_path }}/dynamic_env_stop.sh"
     content: |
       {{ _rpi_setup_docker_service.docker_dynamic_env }}
-
       # Stop Docker Compose service
       /usr/bin/docker compose down
       exit $?
