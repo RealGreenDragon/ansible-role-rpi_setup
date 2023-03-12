@@ -89,7 +89,7 @@
   when: _rpi_setup_docker_service.docker_env | d(false, true)
   no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
-- name: Manage Docker Compose Service dynamic env script
+- name: Manage Docker Compose Service dynamic env start script
   ansible.builtin.copy:
     dest: "{{ _rpi_setup_docker_service.project_path }}/dynamic_env_start.sh"
     content: |
@@ -97,13 +97,29 @@
 
       # Start Docker Compose service
       /usr/bin/docker compose up -d --remove-orphans
+      exit $?
     owner: root
     group: root
-    mode: 0640
+    mode: 0740
   become: true
   when: _rpi_setup_docker_service.docker_dynamic_env | d(false, true)
   no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
+- name: Manage Docker Compose Service dynamic env stop script
+  ansible.builtin.copy:
+    dest: "{{ _rpi_setup_docker_service.project_path }}/dynamic_env_stop.sh"
+    content: |
+      {{ _rpi_setup_docker_service.docker_dynamic_env }}
+
+      # Stop Docker Compose service
+      /usr/bin/docker compose down
+      exit $?
+    owner: root
+    group: root
+    mode: 0740
+  become: true
+  when: _rpi_setup_docker_service.docker_dynamic_env | d(false, true)
+  no_log: "{{ rpi_setup_nolog_override | d(true) | bool }}"
 
 #### Docker Compose Service project
 # Added regex_replace after to_nice_yaml to apply indent=2 also at list elements
