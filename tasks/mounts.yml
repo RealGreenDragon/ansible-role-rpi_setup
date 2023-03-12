@@ -6,7 +6,7 @@
     mode: 0755
   loop: "{{ rpi_setup_mounts }}"
   loop_control:
-    loop_var: "{{ rpi_mount }}"
+    loop_var: rpi_mount
   become: true
   when: rpi_mount.manage_folder | d(false) | bool
 
@@ -19,5 +19,5 @@
     state: "{{ rpi_mount.state | default('mounted') }}"
   loop: "{{ rpi_setup_mounts }}"
   loop_control:
-    loop_var: "{{ rpi_mount }}"
+    loop_var: rpi_mount
   become: true
