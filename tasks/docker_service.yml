@@ -5,7 +5,7 @@
     name: "{{ docker_image }}"
     source: pull
     force_source: "{{ _rpi_setup_docker_service.docker_images_force | d(omit) }}"
-  loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'external') }}"
+  loop: "{{ _rpi_setup_docker_service.docker_images }}"
   loop_control:
     loop_var: docker_image
   become: true
