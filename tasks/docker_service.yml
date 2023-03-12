@@ -22,7 +22,7 @@
     uid: "{{ service_user.uid }}"
     groups: "{{ service_user.groups | d(omit) }}"
     shell: "{{ service_user.shell | d(omit) }}"
-  loop: "{{ _rpi_setup_docker_service.users | d(false, true) }}"
+  loop: "{{ _rpi_setup_docker_service.users | d([], true) }}"
   loop_control:
     loop_var: service_user
   become: true
@@ -53,7 +53,7 @@
 #### Docker Compose Service secrets
 - name: Manage Docker Compose Global Secrets (external) # noqa args[module]
   community.docker.docker_secret: "{{ docker_secret_external.configuration }}"
-  loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'external') }}"
+  loop: "{{ _rpi_setup_docker_service.docker_secrets | d({}, true) | selectattr('type', 'external') }}"
   loop_control:
     loop_var: docker_secret_external
   become: true
@@ -68,7 +68,7 @@
     owner: root
     group: root
     mode: 0640
-  loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'file') }}"
+  loop: "{{ _rpi_setup_docker_service.docker_secrets | d({}, true) | selectattr('type', 'file') }}"
   loop_control:
     loop_var: docker_secret_file
   become: true
