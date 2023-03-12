@@ -21,6 +21,8 @@
     CHANNEL: stable
   changed_when: _rpi_setup_docker_is_present.rc == 1
   become: true
+  async: "{{ ansible_check_mode | ternary(0, 3600) }}"
+  poll: 30
   when: _rpi_setup_docker_is_present.rc == 1
 
 - name: Manage Docker service
