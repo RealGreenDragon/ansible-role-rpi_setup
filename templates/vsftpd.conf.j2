@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
 
-{% for option in rpi_setup_vsftpd_options %}
-{{ option.key }}={{ option.value }}
+{% for option_key, option_value in rpi_setup_vsftpd_options.items() %}
+{{ option_key }}={{ option_value }}
 {% endfor %}
