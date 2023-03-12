@@ -6,14 +6,14 @@
   notify: rpi_setup_gather_info_handler
 
 - name: Parse current locale configuration
-  command: "localectl status"
+  ansible.builtin.command: "localectl status"
   changed_when: false
   check_mode: false
   become: true
   register: _rpi_setup_locale_info
 
 - name: Manage locale configuration
-  command: >-
+  ansible.builtin.command: >- # noqa no-changed-when
     localectl set-locale LANG={{ rpi_setup_locale_lang }}
   when: (_rpi_setup_locale_info.stdout | regex_search('LANG=([^\n]+)', '\\1') | first) != rpi_setup_locale_lang
   notify: rpi_setup_gather_info_handler
