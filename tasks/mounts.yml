@@ -1,4 +1,15 @@
 ---
+- name: Manage mountpoints
+  ansible.builtin.file:
+    path: "{{ rpi_mount.path }}"
+    state: directory
+    mode: 0755
+  loop: "{{ rpi_setup_mounts }}"
+  loop_control:
+    loop_var: "{{ rpi_mount }}"
+  become: true
+  when: rpi_mount.manage_folder | d(false) | bool
+
 - name: Manage mounts
   ansible.posix.mount:
     fstype: "{{ rpi_mount.fstype | default(omit) }}"
@@ -6,7 +17,7 @@
     path: "{{ rpi_mount.path }}"
     src: "{{ rpi_mount.src | default(omit) }}"
     state: "{{ rpi_mount.state | default('mounted') }}"
-  loop: "{{ rpi_setup_config_mounts }}"
+  loop: "{{ rpi_setup_mounts }}"
   loop_control:
     loop_var: "{{ rpi_mount }}"
   become: true

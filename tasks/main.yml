@@ -2,6 +2,14 @@
 - name: Gather info
   ansible.builtin.include_tasks: _gather_info.yml
 
+- name: Check architecture and OS version are supported
+  ansible.builtin.assert:
+    that:
+      - ansible_architecture in ('armhf', 'aarch64')
+      - ansible_distribution == 'debian'
+      - ansible_distribution_major_version >= 11
+    msg: "This role requires Debian 11 or newer on ARM x86/64"
+
 - name: Manage Raspberry Pi APT
   ansible.builtin.include_tasks: apt.yml
   when: ('apt' in rpi_setup_configure_resources)

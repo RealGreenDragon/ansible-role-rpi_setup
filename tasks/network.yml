@@ -1,4 +1,10 @@
 ---
+- name: Manage hostname
+  ansible.builtin.hostname:
+    name: "{{ rpi_setup_network_hostname }}"
+    use: systemd
+  notify: rpi_setup_gather_info_handler
+
 - name: Manage /etc/hosts
   ansible.builtin.template:
     src: etc_hosts.j2
@@ -18,7 +24,7 @@
     mode: 0644
   become: true
 
-- name: Manage dhcpcd.conf main interface options
+- name: Manage dhcpcd.conf main interface static options
   ansible.builtin.blockinfile:
     dest: /etc/dhcpcd.conf
     block: |

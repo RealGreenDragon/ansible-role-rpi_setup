@@ -18,6 +18,7 @@ rpi_setup_configure_resources:
   - docker_services
 
 #### APT
+rpi_setup_apt_unattended_upgrades: false
 rpi_setup_apt_upgrade: true
 rpi_setup_apt_dist_upgrade: false
 rpi_setup_apt_base_packages:
