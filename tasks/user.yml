@@ -11,7 +11,7 @@
   ansible.builtin.pip:
     name: "{{ _rpi_setup_python_modules_default + rpi_setup_user_python_modules }}"
     virtualenv: "{{ rpi_setup_user_python_env }}"
-    virtualenv_python: "{{ rpi_setup_python_command }}"
+    virtualenv_command: "{{ rpi_setup_python_command }} -m venv"
   become: true
   become_user: "{{ rpi_setup_user_name }}"
 

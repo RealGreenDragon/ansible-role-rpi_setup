@@ -22,7 +22,7 @@
   ansible.builtin.pip:
     name: "{{ _rpi_setup_python_modules_default + _rpi_setup_rpwcs_python_modules }}"
     virtualenv: "{{ _rpi_setup_rpwcs_venv_path }}"
-    virtualenv_python: "{{ rpi_setup_python_command }}"
+    virtualenv_command: "{{ rpi_setup_python_command }} -m venv"
   become: true
 
 - name: Manage Raspberry Pi Web Control Server service file
