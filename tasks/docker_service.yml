@@ -145,7 +145,7 @@
 - name: Manage Docker Compose Service systemd service
   ansible.builtin.systemd:
     name: "docker-{{ _rpi_setup_docker_service.name }}.service"
-    state: "{{ _rpi_setup_docker_service.state | d(omit) }}"
+    state: "{{ _rpi_setup_docker_service.state | d('present') }}"
     enabled: "{{ _rpi_setup_docker_service.enabled | bool }}"
     daemon_reload: true
   become: true
