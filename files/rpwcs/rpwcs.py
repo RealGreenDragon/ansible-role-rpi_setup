@@ -113,19 +113,19 @@ def rpwcs_jellyfin_displayname():
 
 @rpwcs_app.route('/jellyfin/status')
 def rpwcs_jellyfin_status():
-    return service_check_status('jellyfin', jellyfin_check_status)
+    return service_check_status('docker-jellyfin', jellyfin_check_status)
 
 @rpwcs_app.route('/jellyfin/start')
 def rpwcs_jellyfin_start():
-    return service_exec_start('jellyfin')
+    return service_exec_start('docker-jellyfin')
 
 @rpwcs_app.route('/jellyfin/stop')
 def rpwcs_jellyfin_stop():
-    return service_exec_stop('jellyfin')
+    return service_exec_stop('docker-jellyfin')
 
 @rpwcs_app.route('/jellyfin/restart')
 def rpwcs_jellyfin_restart():
-    return service_exec_restart('jellyfin')
+    return service_exec_restart('docker-jellyfin')
 
 
 #### aMule ####
@@ -142,19 +142,19 @@ def rpwcs_amule_displayname():
 
 @rpwcs_app.route('/amule/status')
 def rpwcs_amule_status():
-    return service_check_status('amule-daemon', amule_check_status)
+    return service_check_status('docker-amule', amule_check_status)
 
 @rpwcs_app.route('/amule/start')
 def rpwcs_amule_start():
-    return service_exec_start('amule-daemon')
+    return service_exec_start('docker-amule')
 
 @rpwcs_app.route('/amule/stop')
 def rpwcs_amule_stop():
-    return service_exec_stop('amule-daemon')
+    return service_exec_stop('docker-amule')
 
 @rpwcs_app.route('/amule/restart')
 def rpwcs_amule_restart():
-    return service_exec_restart('amule-daemon')
+    return service_exec_restart('docker-amule')
 
 
 #### Transmission ####
@@ -171,19 +171,19 @@ def rpwcs_transmission_displayname():
 
 @rpwcs_app.route('/transmission/status')
 def rpwcs_transmission_status():
-    return service_check_status('transmission-daemon', transmission_check_status)
+    return service_check_status('docker-transmission', transmission_check_status)
 
 @rpwcs_app.route('/transmission/start')
 def rpwcs_transmission_start():
-    return service_exec_start('transmission-daemon')
+    return service_exec_start('docker-transmission')
 
 @rpwcs_app.route('/transmission/stop')
 def rpwcs_transmission_stop():
-    return service_exec_stop('transmission-daemon')
+    return service_exec_stop('docker-transmission')
 
 @rpwcs_app.route('/transmission/restart')
 def rpwcs_transmission_restart():
-    return service_exec_restart('transmission-daemon')
+    return service_exec_restart('docker-transmission')
 
 
 #### JDownloader ####
@@ -197,19 +197,19 @@ def rpwcs_jdownloader_displayname():
 
 @rpwcs_app.route('/jdownloader/status')
 def rpwcs_jdownloader_status():
-    return service_check_status('jdownloader', jdownloader_check_status)
+    return service_check_status('docker-jdownloader', jdownloader_check_status)
 
 @rpwcs_app.route('/jdownloader/start')
 def rpwcs_jdownloader_start():
-    return service_exec_start('jdownloader')
+    return service_exec_start('docker-jdownloader')
 
 @rpwcs_app.route('/jdownloader/stop')
 def rpwcs_jdownloader_stop():
-    return service_exec_stop('jdownloader')
+    return service_exec_stop('docker-jdownloader')
 
 @rpwcs_app.route('/jdownloader/restart')
 def rpwcs_jdownloader_restart():
-    return service_exec_restart('jdownloader')
+    return service_exec_restart('docker-jdownloader')
 
 
 #### FileZilla ####
@@ -223,19 +223,19 @@ def rpwcs_filezilla_displayname():
 
 @rpwcs_app.route('/filezilla/status')
 def rpwcs_filezilla_status():
-    return service_check_status('docker-compose@filezilla', filezilla_check_status)
+    return service_check_status('docker-filezilla', filezilla_check_status)
 
 @rpwcs_app.route('/filezilla/start')
 def rpwcs_filezilla_start():
-    return service_exec_start('docker-compose@filezilla')
+    return service_exec_start('docker-filezilla')
 
 @rpwcs_app.route('/filezilla/stop')
 def rpwcs_filezilla_stop():
-    return service_exec_stop('docker-compose@filezilla')
+    return service_exec_stop('docker-filezilla')
 
 @rpwcs_app.route('/filezilla/restart')
 def rpwcs_filezilla_restart():
-    return service_exec_restart('docker-compose@filezilla')
+    return service_exec_restart('docker-filezilla')
 
 
 #### RPi ####
