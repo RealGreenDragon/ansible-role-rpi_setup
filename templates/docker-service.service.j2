@@ -8,7 +8,7 @@ Type = oneshot
 RemainAfterExit = true
 WorkingDirectory = {{ _rpi_setup_docker_service.project_path }}
 {% if 'docker_dynamic_env' in _rpi_setup_docker_service and _rpi_setup_docker_service.docker_dynamic_env %}
-ExecStart = "/bin/bash -c 'source dynamic_env.sh && /usr/bin/docker compose up -d --remove-orphans'"
+ExecStart = "/bin/bash dynamic_env_start.sh"
 {% else %}
 ExecStart = "/usr/bin/docker compose up -d --remove-orphans"
 {% endif %}

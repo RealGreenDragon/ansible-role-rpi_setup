@@ -91,9 +91,12 @@
 
 - name: Manage Docker Compose Service dynamic env script
   ansible.builtin.copy:
-    dest: "{{ _rpi_setup_docker_service.project_path }}/dynamic_env.sh"
+    dest: "{{ _rpi_setup_docker_service.project_path }}/dynamic_env_start.sh"
     content: |
       {{ _rpi_setup_docker_service.docker_dynamic_env }}
+
+      # Start Docker Compose service
+      /usr/bin/docker compose up -d --remove-orphans
     owner: root
     group: root
     mode: 0640
