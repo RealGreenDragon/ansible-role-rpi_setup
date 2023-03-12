@@ -4,19 +4,7 @@
     _rpi_setup_reboot_required: false
 
 - name: Reboot Raspberry Pi
-  ansible.builtin.shell: "sleep 4 && reboot"
-  changed_when: true
-  async: 1
-  poll: 0
-  become: true
-  notify: rpi_setup_gather_info_handler
+  ansible.builtin.reboot:
 
-- name: Wait for the reboot to complete
-  ansible.builtin.wait_for_connection:
-    connect_timeout: 20
-    sleep: 5
-    delay: 5
-    timeout: 300
-
-- name: Flush handlers
-  ansible.builtin.meta: flush_handlers
+- name: Force info update
+  ansible.builtin.include_tasks: _gather_info.yml
