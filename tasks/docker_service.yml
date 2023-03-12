@@ -52,7 +52,7 @@
 
 
 #### Docker Compose Service secrets
-- name: Manage Docker Compose Global Secrets (external)
+- name: Manage Docker Compose Global Secrets (external) # noqa args[module]
   community.docker.docker_secret: "{{ docker_secret_external.configuration }}"
   loop: "{{ _rpi_setup_docker_service.docker_secrets | selectattr('type', 'external') }}"
   loop_control:

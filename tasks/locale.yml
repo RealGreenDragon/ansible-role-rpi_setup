@@ -12,8 +12,8 @@
   become: true
   register: _rpi_setup_locale_info
 
-- name: Manage locale configuration
-  ansible.builtin.command: >- # noqa no-changed-when
-    localectl set-locale LANG={{ rpi_setup_locale_lang }}
+- name: Manage locale configuration # noqa no-changed-when
+  ansible.builtin.command: >-
+    localectl set-locale LANG={{ rpi_setup_locale_lang }} # noqa package-latest
   when: (_rpi_setup_locale_info.stdout | regex_search('LANG=([^\n]+)', '\\1') | first) != rpi_setup_locale_lang
   notify: rpi_setup_gather_info_handler
