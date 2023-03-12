@@ -110,7 +110,7 @@
     dest: "{{ _rpi_setup_docker_service.project_path }}/docker-compose.yml"
     content: |
       ---
-      {{ _rpi_setup_docker_service.configuration | to_nice_yaml(indent=2, width=9999, sort_keys=False) | regex_replace('\n( *  - )', '\n  \\1') }}
+      {{ _rpi_setup_docker_service.configuration | to_nice_yaml(indent=2, width=9999, sort_keys=False) | regex_replace('\n( *  - )', '\n  \1') }}
     owner: root
     group: root
     mode: 0640

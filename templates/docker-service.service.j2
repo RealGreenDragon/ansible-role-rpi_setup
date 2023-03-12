@@ -7,7 +7,11 @@ After = {{ (rpi_setup_docker_services_base_systemd_dependencies | d([], true)) +
 Type = oneshot
 RemainAfterExit = true
 WorkingDirectory = {{ _rpi_setup_docker_service.project_path }}
-ExecStart = "{{ 'source dynamic_env.sh ; ' if 'docker_dynamic_env' in _rpi_setup_docker_service and _rpi_setup_docker_service.docker_dynamic_env }}/usr/bin/docker compose up -d --remove-orphans"
+{%- if 'docker_dynamic_env' in _rpi_setup_docker_service and _rpi_setup_docker_service.docker_dynamic_env -%}
+ExecStart = "source dynamic_env.sh ; /usr/bin/docker compose up -d --remove-orphans"
+{%- else -%}
+ExecStart = "/usr/bin/docker compose up -d --remove-orphans"
+{%- endif -%}
 ExecStop = "/usr/bin/docker compose down"
 Restart = no
 
